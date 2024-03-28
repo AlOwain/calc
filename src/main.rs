@@ -1,4 +1,6 @@
-use clap::{Parser};
+mod lexer;
+
+use clap::Parser;
 
 #[derive(Parser)]
 #[command(name = "calc")]
@@ -9,5 +11,5 @@ struct Cli {
 
 fn main() {
     let cli = Cli::parse();
-    dbg!(cli.equation);
+    dbg!(lexer::lexer(cli.equation));
 }
