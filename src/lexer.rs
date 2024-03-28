@@ -11,6 +11,24 @@ pub struct Numeric {
 #[derive(Debug)]
 pub enum Operand {
     Numeric(Numeric),
+    None
+}
+
+impl Operand {
+    fn new(value: String) -> Self {
+        // TODO Convert 
+        let value = match value.parse() {
+            Ok(val) => val,
+            Err(err) => {
+                panic!("calc: {} '{}'\n{}",
+                    "Unexpected value given as operand", value, err
+                );
+            }
+        };
+        Operand::Numeric(Numeric {
+            value,
+        })
+    }
 }
 
 #[derive(Debug)]
@@ -20,42 +38,56 @@ pub enum Token {
     None
 }
 
+// FIXME: Replace me with a macro
+fn err_unexpected_token(word: &String) {
+    println!("calc: Unexpected token: {}", word);
+    std::process::exit(1);
+}
+
 pub fn tokenizer(args: Vec<String>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::new();
 
     for arg in args.iter() {
+        let mut value = String::new();
         let mut token = Token::None;
         for byte in arg.as_bytes() {
             match byte {
+                43 => {
+                    if !value.is_empty() {
+                        statement.push(Token::Operand(Operand::new(value)));
+                        token = Token::None;
+                        value = String::new();
+                    }
+                    if !matches!(token, Token::None) {
+                        err_unexpected_token(arg);
+                    }
+
+                    token = Token::Operator(Operator::Add);
+                    statement.push(token);
+                    token = Token::None
+                }
                 48..=57 => {
-                    match token {
-                        Token::None => {
-                            token = Token::Operand(
-                            Operand::Numeric(Numeric {
-                                value: (*byte as i64) - 48,
-                            }));
+                    if matches!(token, Token::None | Token::Operand(Operand::None)) {
+                        if matches!(token, Token::None) {
+                            token = Token::Operand(Operand::None);
                         }
-                        Token::Operand(Operand::Numeric(ref mut numeric)) => {
-                            numeric.value *= 10;
-                            numeric.value += (*byte as i64) - 48;
-                        }
-                        _ => {
-                            println!(
-                                "{} \'{}\'",
-                                "calc: Unexpected token:",
-                                (*byte as char)
-                            );
-                            std::process::exit(1);
-                        }
+                        value.push(*byte as char);
+                    }
+                    else {
+                        println!("I am here, {}", *byte as char);
+                        err_unexpected_token(arg);
                     }
                 }
                 _ => {
+                    // FIXME: Replace me with a macro too!
                     println!("calc: Invalid token: \'{}\'", arg);
                     std::process::exit(1);
                 }
             }
         }
-        statement.push(token);
+        if matches!(token, Token::Operand(_)) {
+            statement.push(Token::Operand(Operand::new(value)))
+        }
     }
     statement
 }
