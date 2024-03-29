@@ -3,8 +3,7 @@ mod lexer;
 use clap::Parser;
 
 #[derive(Parser)]
-#[command(name = "calc")]
-#[command(version, about, long_about = None)]
+#[command(name = "calc", arg_required_else_help = true, version, about, long_about = None)]
 struct Cli {
     equation: Vec<String>
 }
