@@ -1,5 +1,7 @@
 use crate::Token;
 use crate::Operator;
+use crate::Operand;
+// use crate::Numeric;
 
 fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     let mut stack: Vec<Token> = Vec::with_capacity(tokens.len());
@@ -30,9 +32,25 @@ fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     stack
 }
 
-pub fn evaluate(operation: Vec<Token>) -> String {
-    let operation = to_postfix(operation);
-    dbg!(operation);
+fn solve(operation: &mut Vec<Token>) -> Operand {
+    let val = operation.pop().expect("Hello");
+    match val {
+        Token::Operand(re) => re,
+        Token::Operator(_) => {
+            todo!("Implement proper operation");
+            // let rhs = solve(operation);
+            // let lhs = solve(operation);
+            // Operand::Numeric(Numeric {
+            //     value: 34
+            // })
+        },
+        _ => panic!("what happened?"),
+    }
 
-    todo!("Implement me!");
+}
+
+pub fn evaluate(operation: Vec<Token>) -> i64 {
+    let mut operation = to_postfix(operation);
+    solve(&mut operation);
+    todo!("Parse operation result!");
 }
