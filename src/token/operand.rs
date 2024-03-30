@@ -1,6 +1,6 @@
 #[derive(Debug)]
-struct Numeric {
-    value: i64,
+pub struct Numeric {
+    pub value: i64,
 }
 
 #[derive(Debug)]

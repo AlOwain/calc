@@ -33,13 +33,10 @@ fn solve(problem: &mut Vec<Token>) -> Operand {
     let val = problem.pop().expect("Unexpected value, equation unreasonably empty!");
     match val {
         Token::Operand(re) => re,
-        Token::Operator(_) => {
-            todo!("Implement proper operation");
-            // let rhs = solve(problem);
-            // let lhs = solve(problem);
-            // Operand::Numeric(Numeric {
-            //     value: 34
-            // })
+        Token::Operator(op) => {
+            let rhs = solve(problem);
+            let lhs = solve(problem);
+            op.do_operation(lhs, rhs)
         },
         _ => panic!("what happened?"),
     }
@@ -48,6 +45,5 @@ fn solve(problem: &mut Vec<Token>) -> Operand {
 
 pub fn evaluate(operation: Vec<Token>) -> i64 {
     let mut operation = to_postfix(operation);
-    solve(&mut operation);
-    todo!("Parse operation result!");
+    solve(&mut operation).into()
 }
