@@ -16,7 +16,7 @@ pub fn tokenizer(args: Vec<String>) -> Vec<Token> {
             match byte {
                 43 => {
                     if !value.is_empty() {
-                        statement.push(Token::Operand(Operand::new(value)));
+                        statement.push(Token::Operand(Operand::from(value)));
                         token = Token::None;
                         value = String::new();
                     }
@@ -48,7 +48,7 @@ pub fn tokenizer(args: Vec<String>) -> Vec<Token> {
             }
         }
         if matches!(token, Token::Operand(_)) {
-            statement.push(Token::Operand(Operand::new(value)))
+            statement.push(Token::Operand(Operand::from(value)))
         }
     }
     statement
