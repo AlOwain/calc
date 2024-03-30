@@ -1,7 +1,4 @@
-use crate::token::Token;
-use crate::token::Operand;
-use crate::token::Operator;
-// use crate::Numeric;
+use crate::token::*;
 
 fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     let mut stack: Vec<Token> = Vec::with_capacity(tokens.len());

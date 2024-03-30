@@ -1,6 +1,4 @@
-use crate::token::Token;
-use crate::token::Operand;
-use crate::token::Operator;
+use crate::token::*;
 
 // FIXME: Replace me with a macro
 fn err_unexpected_token(word: &String) {

@@ -1,9 +1,4 @@
 #[derive(Debug)]
-pub enum Operator {
-    Add,
-}
-
-#[derive(Debug)]
 pub struct Numeric {
     value: i64,
 }
@@ -31,9 +26,3 @@ impl Operand {
     }
 }
 
-#[derive(Debug)]
-pub enum Token {
-    Operand(Operand),
-    Operator(Operator),
-    None
-}
