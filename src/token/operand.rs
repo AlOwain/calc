@@ -1,5 +1,5 @@
 #[derive(Debug)]
-pub struct Numeric {
+struct Numeric {
     value: i64,
 }
 
