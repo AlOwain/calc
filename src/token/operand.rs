@@ -18,11 +18,11 @@ impl From<String> for Operand {
     }
 }
 
-impl Operand {
-    pub fn value(self) -> f64 {
+impl Into<i64> for Operand {
+    fn into(self) -> i64 {
         match self {
-            Self::Numeric(val) => val.value as f64,
-            _ => panic!()
+            Self::Numeric(val) => val.value as i64,
+            _ => todo!("Other operand types have not been implemented yet!")
         }
     }
 }
