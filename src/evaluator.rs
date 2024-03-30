@@ -1,6 +1,6 @@
-use crate::Token;
-use crate::Operator;
-use crate::Operand;
+use crate::token::Token;
+use crate::token::Operand;
+use crate::token::Operator;
 // use crate::Numeric;
 
 fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
