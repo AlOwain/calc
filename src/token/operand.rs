@@ -11,18 +11,16 @@ pub enum Operand {
 
 impl Operand {
     pub fn new(value: String) -> Self {
-        // TODO Convert 
-        let value = match value.parse() {
-            Ok(val) => val,
-            Err(err) => {
-                panic!("calc: {} '{}'\n{}",
-                    "Unexpected value given as operand", value, err
-                );
-            }
-        };
+        let value = value.parse().expect("calc: Unexpected value given as operand \'{value}\'");
         Operand::Numeric(Numeric {
             value,
         })
     }
-}
 
+    pub fn value(self) -> f64 {
+        match self {
+            Self::Numeric(val) => val.value as f64,
+            _ => panic!()
+        }
+    }
+}
