@@ -32,14 +32,14 @@ fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     stack
 }
 
-fn solve(operation: &mut Vec<Token>) -> Operand {
-    let val = operation.pop().expect("Hello");
+fn solve(problem: &mut Vec<Token>) -> Operand {
+    let val = problem.pop().expect("Unexpected value, equation unreasonably empty!");
     match val {
         Token::Operand(re) => re,
         Token::Operator(_) => {
             todo!("Implement proper operation");
-            // let rhs = solve(operation);
-            // let lhs = solve(operation);
+            // let rhs = solve(problem);
+            // let lhs = solve(problem);
             // Operand::Numeric(Numeric {
             //     value: 34
             // })
