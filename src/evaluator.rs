@@ -1,4 +1,5 @@
 use crate::token::*;
+use crate::err;
 
 fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     let mut stack: Vec<Token> = Vec::with_capacity(tokens.len());
@@ -16,9 +17,7 @@ fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
                     }
                 }
             }
-            _ => {
-                panic!("calc: Error while parsing token");
-            }
+            _ => err!("Error while parsing tokens, token type undefined."),
         }
     }
 
@@ -30,7 +29,11 @@ fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
 }
 
 fn solve(problem: &mut Vec<Token>) -> Operand {
-    let val = problem.pop().expect("Unexpected value, equation unreasonably empty!");
+    let val = match problem.pop() {
+        Some(value) => value,
+        None => err!("Additional operator provided!"),
+    };
+
     match val {
         Token::Operand(re) => re,
         Token::Operator(op) => {
@@ -38,7 +41,7 @@ fn solve(problem: &mut Vec<Token>) -> Operand {
             let lhs = solve(problem);
             op.do_operation(lhs, rhs)
         },
-        _ => panic!("what happened?"),
+        _ => err!("Token parsing failed."),
     }
 
 }

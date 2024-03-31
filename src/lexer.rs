@@ -1,10 +1,5 @@
 use crate::token::*;
-
-// FIXME: Replace me with a macro
-fn err_unexpected_token(word: &String) {
-    println!("calc: Unexpected token: {}", word);
-    std::process::exit(1);
-}
+use crate::err;
 
 pub fn tokenizer(args: Vec<String>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::new();
@@ -20,9 +15,7 @@ pub fn tokenizer(args: Vec<String>) -> Vec<Token> {
                         token = Token::None;
                         value = String::new();
                     }
-                    if !matches!(token, Token::None) {
-                        err_unexpected_token(arg);
-                    }
+                    if !matches!(token, Token::None) { err!("Error while parsing, invalid token state: {}, {:?}", arg, token); }
 
                     token = Token::Operator(Operator::Add);
                     statement.push(token);
@@ -35,16 +28,9 @@ pub fn tokenizer(args: Vec<String>) -> Vec<Token> {
                         }
                         value.push(*byte as char);
                     }
-                    else {
-                        println!("I am here, {}", *byte as char);
-                        err_unexpected_token(arg);
-                    }
+                    else { err!("Unexpected token: {}", arg); }
                 }
-                _ => {
-                    // FIXME: Replace me with a macro too!
-                    println!("calc: Invalid token: \'{}\'", arg);
-                    std::process::exit(1);
-                }
+                _ => { err!("Invalid token: \'{}\'", arg); }
             }
         }
         if matches!(token, Token::Operand(_)) {

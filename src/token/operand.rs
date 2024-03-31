@@ -1,3 +1,5 @@
+use crate::err;
+
 #[derive(Debug)]
 pub struct Numeric {
     pub value: i64,
@@ -22,7 +24,7 @@ impl Into<i64> for Operand {
     fn into(self) -> i64 {
         match self {
             Self::Numeric(val) => val.value as i64,
-            _ => todo!("Other operand types have not been implemented yet!")
+            _ => err!("Other operand types have not been implemented yet.")
         }
     }
 }

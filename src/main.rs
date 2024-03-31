@@ -10,7 +10,22 @@ struct Cli {
     equation: Vec<String>
 }
 
+
+// ---------------------------
+// This code was provided by ChatGPT, an AI language model developed by OpenAI.
+#[macro_export]
+macro_rules! err {
+    ($fmt:expr $(, $($arg:tt)*)?) => {
+        {
+            eprint!("calc: ");
+            eprintln!($fmt $(, $($arg)*)?);
+            std::process::exit(1);
+        }
+    };
+}
+// ---------------------------
+
 fn main() {
     let cli = Cli::parse();
-    dbg!(evaluator::evaluate(lexer::lexer(cli.equation)));
+    println!("{}", evaluator::evaluate(lexer::lexer(cli.equation)));
 }
