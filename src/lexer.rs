@@ -1,7 +1,7 @@
 use crate::token::*;
 use crate::err;
 
-pub fn tokenizer(args: Vec<String>) -> Vec<Token> {
+pub fn lexer(args: Vec<String>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::new();
 
     for arg in args.iter() {
@@ -38,8 +38,4 @@ pub fn tokenizer(args: Vec<String>) -> Vec<Token> {
         }
     }
     statement
-}
-
-pub fn lexer(args: Vec<String>) -> Vec<Token> {
-    tokenizer(args)
 }
