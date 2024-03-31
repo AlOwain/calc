@@ -1,5 +1,3 @@
-use crate::err;
-
 #[derive(Debug)]
 pub struct Numeric {
     pub value: i64,
@@ -20,11 +18,25 @@ impl From<String> for Operand {
     }
 }
 
+impl From<char> for Operand {
+    fn from(val: char) -> Self {
+        match val {
+            '0'..='9' => {
+                Operand::Numeric(Numeric {
+                    value: (val as u8 - b'0') as i64
+                })
+            }
+            // FIXME: Handle non-numeral cases
+            _ => todo!("Operands could not be created from non-numeric character \'{}\'", val),
+        }
+    }
+}
+
 impl Into<i64> for Operand {
     fn into(self) -> i64 {
         match self {
             Self::Numeric(val) => val.value as i64,
-            _ => err!("Other operand types have not been implemented yet.")
+            _ => todo!("Conversion into values has not been implemented yet for non-numeric operands.")
         }
     }
 }
