@@ -10,10 +10,10 @@ pub enum Operand {
 }
 
 impl From<String> for Operand {
-    fn from(value: String) -> Self {
-        let value = value.parse().expect("calc: Unexpected value given as operand \'{value}\'");
+    fn from(val: String) -> Self {
+        let val = val.parse().expect("calc: Unexpected value given as operand \'{value}\'");
         Operand::Numeric(Numeric {
-            value,
+            value: val,
         })
     }
 }
@@ -27,7 +27,7 @@ impl From<char> for Operand {
                 })
             }
             // FIXME: Handle non-numeral cases
-            _ => todo!("Operands could not be created from non-numeric character \'{}\'", val),
+            _ => todo!("Operands could not be created from non-numeral character \'{}\'", val),
         }
     }
 }
@@ -36,7 +36,7 @@ impl Into<i64> for Operand {
     fn into(self) -> i64 {
         match self {
             Self::Numeric(val) => val.value as i64,
-            _ => todo!("Conversion into values has not been implemented yet for non-numeric operands.")
+            _ => todo!("Conversion into values has not been implemented yet for non-numeral operands."),
         }
     }
 }
