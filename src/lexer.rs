@@ -1,12 +1,11 @@
 use crate::token::*;
 use crate::err;
 
-fn flush(value: String, token: Token, statement: &mut Vec<Token>) -> (String, Token){
+fn flush(value: String, statement: &mut Vec<Token>) -> (String, Token) {
     if !value.is_empty() {
         statement.push(Token::Operand(Operand::from(value)));
-        return (String::new(), Token::None);
     }
-    (value, token)
+    (String::new(), Token::None)
 }
 
 pub fn lexer(args: Vec<String>) -> Vec<Token> {
@@ -18,12 +17,8 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
         for byte in arg.as_bytes() {
             match byte {
                 43 => {
-                    (value, token) = flush(value, token, &mut statement);
-                    if !matches!(token, Token::None) { err!("Error while parsing, invalid token state: {}, {:?}", arg, token); }
-
-                    token = Token::Operator(Operator::Add);
-                    statement.push(token);
-                    token = Token::None
+                    (value, token) = flush(value, &mut statement);
+                    statement.push(Token::Operator(Operator::Add));
                 }
                 48..=57 => {
                     if matches!(token, Token::None | Token::Operand(Operand::None)) {
@@ -37,7 +32,7 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
                 _ => { err!("Invalid token: \'{}\'", arg); }
             }
         }
-        (value, token) = flush(value, token, &mut statement);
+        (value, token) = flush(value, &mut statement);
     }
     statement
 }
