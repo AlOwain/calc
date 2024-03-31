@@ -15,6 +15,9 @@ fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
                     Operator::Add => {
                         operators.push(token);
                     }
+                    Operator::Subtract=> {
+                        operators.push(token);
+                    }
                 }
             }
             _ => err!("Error while parsing tokens, token type undefined."),
