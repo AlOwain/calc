@@ -1,38 +1,42 @@
 use crate::token::*;
 use crate::err;
 
-fn flush(value: String, statement: &mut Vec<Token>) -> (String, Token) {
-    if !value.is_empty() {
-        statement.push(Token::Operand(Operand::from(value)));
-    }
-    (String::new(), Token::None)
+macro_rules! flush {
+    ($token:expr, $statement:expr) => {
+        {
+            if !matches!($token, Token::None) { $statement.push($token); }
+            $token = Token::None
+        }
+    };
 }
 
 pub fn lexer(args: Vec<String>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::new();
 
-    let mut value = String::new();
     let mut token = Token::None;
-    for arg in args.iter() {
-        for byte in arg.as_bytes() {
-            match byte {
-                43 => {
-                    (value, token) = flush(value, &mut statement);
+    for word in args.iter() {
+        for character in word.chars() {
+            match character {
+                '+' => {
+                    flush!(token, statement);
                     statement.push(Token::Operator(Operator::Add));
                 }
-                48..=57 => {
-                    if matches!(token, Token::None | Token::Operand(Operand::None)) {
-                        if matches!(token, Token::None) {
-                            token = Token::Operand(Operand::None);
-                        }
-                        value.push(*byte as char);
+                '0'..='9' => {
+                    token = match token {
+                        Token::Operand(zy) => {
+                            let op_value: i64 = zy.into();
+                            Token::Operand(Operand::Numeric(Numeric {
+                                value: (op_value * 10) + (character as u8 - b'0') as i64,
+                            }))
+                        } ,
+                        Token::None => Token::Operand(Operand::from(character)),
+                        _ => err!("Unexpected token: \'{}\'", word),
                     }
-                    else { err!("Unexpected token: {}", arg); }
                 }
-                _ => { err!("Invalid token: \'{}\'", arg); }
+                _ => { err!("Invalid token: \'{}\'", word); }
             }
         }
-        (value, token) = flush(value, &mut statement);
+        flush!(token, statement);
     }
     statement
 }
