@@ -17,6 +17,7 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
     for word in args.iter() {
         for character in word.chars() {
             match character {
+                ' ' => flush!(token, statement),
                 '+' => {
                     flush!(token, statement);
                     statement.push(Token::Operator(Operator::Add));
