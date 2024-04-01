@@ -2,14 +2,14 @@ use crate::token::*;
 use crate::err;
 
 fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
-    let mut stack: Vec<Token> = Vec::with_capacity(tokens.len());
+    let mut operands: Vec<Token> = Vec::with_capacity(tokens.len());
     let mut operators: Vec<Token> = Vec::new();
     // FIXME:       Implement the order of operations
     //          obviously it does not matter right now
     //          since all we do is + anyway
     for token in tokens {
         match &token {
-            Token::Operand(_) => stack.push(token),
+            Token::Operand(_) => operands.push(token),
             Token::Operator(operation) => {
                 match operation {
                     Operator::Add => {
@@ -24,11 +24,9 @@ fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
         }
     }
 
-    for operator in operators {
-        stack.push(operator);
-    }
+    operands.append(&mut operators);
 
-    stack
+    operands
 }
 
 fn solve(problem: &mut Vec<Token>) -> Operand {
@@ -51,5 +49,6 @@ fn solve(problem: &mut Vec<Token>) -> Operand {
 
 pub fn evaluate(operation: Vec<Token>) -> i64 {
     let mut operation = to_postfix(operation);
+    dbg!(&operation);
     solve(&mut operation).into()
 }
