@@ -26,7 +26,6 @@ impl From<char> for Operand {
                     value: (val as u8 - b'0') as i64
                 })
             }
-            // FIXME: Handle non-numeral cases
             _ => todo!("Operands could not be created from non-numeral character \'{}\'", val),
         }
     }
