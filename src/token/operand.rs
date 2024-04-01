@@ -6,7 +6,7 @@ pub struct Numeric {
 #[derive(Debug)]
 pub enum Operand {
     Numeric(Numeric),
-    None
+    // None
 }
 
 impl From<String> for Operand {
