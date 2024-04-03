@@ -18,6 +18,10 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
         for character in word.chars() {
             match character {
                 ' ' => flush!(token, statement),
+                '-' => {
+                    flush!(token, statement);
+                    statement.push(Token::Operator(Operator::Subtract));
+                }
                 '+' => {
                     flush!(token, statement);
                     statement.push(Token::Operator(Operator::Add));
