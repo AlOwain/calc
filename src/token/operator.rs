@@ -1,11 +1,11 @@
 use crate::token::*;
 use std::cmp::Ordering;
 
-const ORDER: [Operator; 4]= [
-    Operator::Multiply,
-    Operator::Divide,
-    Operator::Add,
-    Operator::Subtract
+const ORDER: [(u8, Operator); 4]= [
+    (2, Operator::Multiply),
+    (2, Operator::Divide),
+    (3, Operator::Add),
+    (3, Operator::Subtract),
 ];
 #[derive(Debug, PartialEq)]
 pub enum Operator {
@@ -60,11 +60,17 @@ fn handle_divide(lhs: &Operand, rhs: &Operand) -> Operand {
 // instead of being definitively larger or smaller.
 impl PartialOrd for Operator {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        let mut self_value: u8 = 0;
+        for (key, value) in ORDER.iter() {
+            if self == value { self_value = *key }
+        };
+        let mut other_value: u8 = 0;
+        for (key, value) in ORDER.iter() {
+            if other == value { other_value = *key; }
+        };
 
-        for element in ORDER.iter() {
-            if self == element { return Some(Ordering::Greater); }
-            if other == element { return Some(Ordering::Less); }
-        }
+        if self_value > other_value { return Some(Ordering::Greater); }
+        if self_value < other_value { return Some(Ordering::Greater); }
         None
     }
 }
