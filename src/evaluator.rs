@@ -18,6 +18,7 @@ fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
                     Operator::Subtract=> {
                         operators.push(token);
                     }
+                    _ => { todo!("Add and Subtract operators are the only types implemented.") }
                 }
             }
             _ => err!("Error while parsing tokens, token type undefined."),
@@ -48,6 +49,5 @@ fn solve(problem: &mut Vec<Token>) -> Operand {
 
 pub fn evaluate(operation: Vec<Token>) -> i64 {
     let mut operation = to_postfix(operation);
-    dbg!(&operation);
     solve(&mut operation).into()
 }
