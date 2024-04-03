@@ -31,10 +31,10 @@ impl From<char> for Operand {
     }
 }
 
-impl Into<i64> for Operand {
+impl Into<i64> for &Operand {
     fn into(self) -> i64 {
         match self {
-            Self::Numeric(val) => val.value as i64,
+            Operand::Numeric(val) => val.value as i64,
             _ => todo!("Conversion into values has not been implemented yet for non-numeral operands."),
         }
     }

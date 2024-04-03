@@ -27,7 +27,7 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
                     statement.push(Token::Operator(Operator::Add));
                 }
                 '0'..='9' => {
-                    token = match token {
+                    token = match &token {
                         Token::Operand(zy) => {
                             let op_value: i64 = zy.into();
                             Token::Operand(Operand::Numeric(Numeric {

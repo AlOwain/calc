@@ -10,7 +10,7 @@ pub enum Operator {
     Divide,
 }
 
-fn handle_add(lhs: Operand, rhs: Operand) -> Operand {
+fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
     let lhs: i64 = lhs.into();
     let rhs: i64 = rhs.into();
 
@@ -20,7 +20,7 @@ fn handle_add(lhs: Operand, rhs: Operand) -> Operand {
     })
 }
 
-fn handle_subtract(lhs: Operand, rhs: Operand) -> Operand {
+fn handle_subtract(lhs: &Operand, rhs: &Operand) -> Operand {
     let lhs: i64 = lhs.into();
     let rhs: i64 = rhs.into();
 
@@ -48,7 +48,7 @@ impl PartialOrd for Operator {
 }
 
 impl Operator {
-    pub fn do_operation(self, lhs: Operand, rhs: Operand) -> Operand {
+    pub fn do_operation(self, lhs: &Operand, rhs: &Operand) -> Operand {
         match self {
             Operator::Add => {
                 handle_add(lhs, rhs)
