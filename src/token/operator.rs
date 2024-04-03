@@ -1,13 +1,19 @@
 use crate::token::*;
 use std::cmp::Ordering;
 
-const ORDER: [Operator; 4]= [Operator::Multiply, Operator::Divide, Operator::Add, Operator::Subtract];
+const ORDER: [Operator; 4]= [
+    Operator::Multiply,
+    Operator::Divide,
+    Operator::Add,
+    Operator::Subtract
+];
 #[derive(Debug, PartialEq)]
 pub enum Operator {
     Add,
     Subtract,
     Multiply,
     Divide,
+    None,
 }
 
 fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
@@ -44,6 +50,18 @@ impl PartialOrd for Operator {
             }
         }
         None
+    }
+}
+
+impl fmt::Display for Operator {
+    fn fmt(&self, format: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Operator::Add       => write!(format, "+"),
+            Operator::Subtract  => write!(format, "-"),
+            Operator::Multiply  => write!(format, "*"),
+            Operator::Divide    => write!(format, "/"),
+            _ => todo!("Failed to display non-numeric Operand type."),
+        }
     }
 }
 

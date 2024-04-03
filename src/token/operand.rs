@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[derive(Debug)]
 pub struct Numeric {
     pub value: i64,
@@ -6,7 +8,7 @@ pub struct Numeric {
 #[derive(Debug)]
 pub enum Operand {
     Numeric(Numeric),
-    // None
+    None
 }
 
 impl From<String> for Operand {
@@ -36,6 +38,17 @@ impl Into<i64> for &Operand {
         match self {
             Operand::Numeric(val) => val.value as i64,
             _ => todo!("Conversion into values has not been implemented yet for non-numeral operands."),
+        }
+    }
+}
+
+impl fmt::Display for Operand {
+    fn fmt(&self, format: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Operand::Numeric(val) => {
+                write!(format, "{}", val.value as i64)
+            }
+            _ => todo!("Failed to display non-numeric Operand type.")
         }
     }
 }
