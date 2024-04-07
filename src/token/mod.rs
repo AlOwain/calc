@@ -3,7 +3,7 @@ pub mod operator;
 
 use std::fmt;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Token {
     Operand(operand::Operand),
     Operator(operator::Operator),

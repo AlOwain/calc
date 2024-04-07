@@ -1,11 +1,11 @@
 use std::fmt;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Numeric {
     pub value: i64,
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Operand {
     Numeric(Numeric),
     None
