@@ -1,3 +1,5 @@
+mod tests;
+
 mod lexer;
 mod evaluator;
 mod token;
