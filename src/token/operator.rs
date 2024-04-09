@@ -69,8 +69,8 @@ impl PartialOrd for Operator {
             if other == value { other_value = *key; }
         };
 
-        if self_value > other_value { return Some(Ordering::Greater); }
         if self_value < other_value { return Some(Ordering::Greater); }
+        if self_value > other_value { return Some(Ordering::Less); }
         None
     }
 }
