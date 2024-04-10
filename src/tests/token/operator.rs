@@ -1,4 +1,5 @@
 #[cfg(test)]
+use std::cmp::Ordering;
 use crate::token::*;
 
 #[test]
@@ -8,25 +9,25 @@ fn order_of_operations() {
     let add         = Operator::Add;
     let subtract    = Operator::Subtract;
 
-    assert!(multiply == multiply);
-    assert!(multiply == divide);
-    assert!(multiply > add);
-    assert!(multiply > subtract);
+    assert!(multiply.cmp(&multiply) == Ordering::Equal);
+    assert!(multiply.cmp(&divide)   == Ordering::Equal);
+    assert!(multiply.cmp(&add)      == Ordering::Greater);
+    assert!(multiply.cmp(&subtract) == Ordering::Greater);
 
-    assert!(divide == multiply);
-    assert!(divide == divide);
-    assert!(divide > add);
-    assert!(divide > subtract);
+    assert!(divide.cmp(&multiply)   == Ordering::Equal);
+    assert!(divide.cmp(&divide)     == Ordering::Equal);
+    assert!(divide.cmp(&add)        == Ordering::Greater);
+    assert!(divide.cmp(&subtract)   == Ordering::Greater);
 
-    assert!(add < multiply);
-    assert!(add < divide);
-    assert!(add == add);
-    assert!(add == subtract);
+    assert!(add.cmp(&multiply)      == Ordering::Less);
+    assert!(add.cmp(&divide)        == Ordering::Less);
+    assert!(add.cmp(&add)           == Ordering::Equal);
+    assert!(add.cmp(&subtract)      == Ordering::Equal);
 
-    assert!(subtract < multiply);
-    assert!(subtract < divide);
-    assert!(subtract == add);
-    assert!(subtract == subtract);
+    assert!(subtract.cmp(&multiply) == Ordering::Less);
+    assert!(subtract.cmp(&divide)   == Ordering::Less);
+    assert!(subtract.cmp(&add)      == Ordering::Equal);
+    assert!(subtract.cmp(&subtract) == Ordering::Equal);
 }
 
 #[test]

@@ -1,6 +1,10 @@
 use crate::token::*;
 use std::cmp::Ordering;
 
+pub fn get_order(op: &Operator) -> u8 {
+    for (k, v) in ORDER.iter() { if op == v { return *k; } };
+    todo!("Order of operator '{}' not yet implemented", op);
+}
 const ORDER: [(u8, Operator); 4]= [
     (2, Operator::Multiply),
     (2, Operator::Divide),
@@ -60,18 +64,7 @@ fn handle_divide(lhs: &Operand, rhs: &Operand) -> Operand {
 // instead of being definitively larger or smaller.
 impl PartialOrd for Operator {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        let mut self_value: u8 = 0;
-        for (key, value) in ORDER.iter() {
-            if self == value { self_value = *key }
-        };
-        let mut other_value: u8 = 0;
-        for (key, value) in ORDER.iter() {
-            if other == value { other_value = *key; }
-        };
-
-        if self_value < other_value { return Some(Ordering::Greater); }
-        if self_value > other_value { return Some(Ordering::Less); }
-        None
+        Some(self.cmp(other))
     }
 }
 
@@ -96,5 +89,14 @@ impl Operator {
             Operator::Divide    => handle_divide(lhs, rhs),
             _ => todo!("Operations on other types have not been implemented yet!")
         }
+    }
+
+    pub fn cmp(&self, other: &Operator) -> Ordering {
+        let self_order = get_order(self);
+        let other_order = get_order(other);
+
+        if self_order < other_order { return Ordering::Greater; }
+        if self_order > other_order { return Ordering::Less; }
+        Ordering::Equal
     }
 }
