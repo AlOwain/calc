@@ -23,7 +23,7 @@ fn push_op(operator: Operator, statement: &mut Vec<Token>, stack: &mut Vec<Token
     }
 }
 
-fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
+pub fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::with_capacity(tokens.len());
     let mut stack: Vec<Token> = Vec::new();
     for token in tokens {
