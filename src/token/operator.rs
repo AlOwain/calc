@@ -1,6 +1,10 @@
 use crate::token::*;
 use std::cmp::Ordering;
 
+pub fn get_order(op: &Operator) -> u8 {
+    for (k, v) in ORDER.iter() { if op == v { return *k; } };
+    todo!("Order of operator '{}' not yet implemented", op);
+}
 const ORDER: [(u8, Operator); 4]= [
     (2, Operator::Multiply),
     (2, Operator::Divide),
@@ -88,17 +92,11 @@ impl Operator {
     }
 
     pub fn cmp(&self, other: &Operator) -> Ordering {
-        let mut self_value: u8 = 0;
-        for (key, value) in ORDER.iter() {
-            if self == value { self_value = *key }
-        };
-        let mut other_value: u8 = 0;
-        for (key, value) in ORDER.iter() {
-            if other == value { other_value = *key; }
-        };
+        let self_order = get_order(self);
+        let other_order = get_order(other);
 
-        if self_value < other_value { return Ordering::Greater; }
-        if self_value > other_value { return Ordering::Less; }
+        if self_order < other_order { return Ordering::Greater; }
+        if self_order > other_order { return Ordering::Less; }
         Ordering::Equal
     }
 }
