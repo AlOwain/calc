@@ -1,10 +1,27 @@
 #[cfg(test)]
-use crate::evaluator;
+use crate::evaluator::*;
 use crate::token::*;
 
 #[test]
-fn postfix() {
+fn operator_push() {
+    let mut stack: Vec<Token> = Vec::new();
+    let mut statement: Vec<Token> = vec!(
+        Token::Operand(Operand::Numeric(Numeric {value: 3})),
+    );
+    push_op(Operator::Add, &mut statement, &mut stack);
 
+    let statement_post = vec!(
+        Token::Operand(Operand::Numeric(Numeric {value: 3})),
+    );
+    let stack_post = vec!(
+        Token::Operator(Operator::Add),
+    );
+    assert_eq!(statement, statement_post);
+    assert_eq!(stack, stack_post);
+}
+
+#[test]
+fn postfix() {
     let equation = vec!(
         Token::Operand(Operand::Numeric(Numeric {value: 3})),
         Token::Operator(Operator::Add),
@@ -20,7 +37,7 @@ fn postfix() {
         Token::Operator(Operator::Multiply),
         Token::Operator(Operator::Add),
     );
-    assert_eq!(evaluator::to_postfix(equation), postfixed)
+    assert_eq!(to_postfix(equation), postfixed)
 }
 
 // To generate similar test cases, use the following snippet:
@@ -36,5 +53,5 @@ fn evaluator() {
             value: 3,
         })),
     );
-    assert_eq!(evaluator::evaluate(equation), 3);
+    assert_eq!(evaluate(equation), 3);
 }
