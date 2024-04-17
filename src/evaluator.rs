@@ -1,7 +1,7 @@
 use crate::token::*;
 use crate::err;
 
-fn push_op(operator: Operator, statement: &mut Vec<Token>, stack: &mut Vec<Token>) {
+pub fn push_op(operator: Operator, statement: &mut Vec<Token>, stack: &mut Vec<Token>) {
     // FIXME:   If the operator is a right parantheses empty the stack up to the left
     //          bracket and push it into the statement
     match stack.pop() {
