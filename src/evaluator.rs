@@ -36,9 +36,17 @@ pub fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
         }
     }
 
-    // TODO: Implement checks
-    //          - If the stack is not empty
-    //          - If the operands are not in the same order
+    // NOTE:       The stack must be reversed before it is appended,
+    //          as the elements of the stack are popped of the end
+    //          and not appended such that that first element is added
+    //          before the rest.
+    //
+    // TODO:    - Reversing the vector is not an ideal solution performance-wise,
+    //          but it will do for now.
+    //          - Implement checks:
+    //              - If the stack is not empty
+    //              - If the operands are not in the same order
+    stack.reverse();
     statement.append(&mut stack);
     statement
 }
