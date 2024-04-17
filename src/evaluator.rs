@@ -1,7 +1,7 @@
 use crate::token::*;
 use crate::err;
 
-fn push_op(operator: Operator, statement: &mut Vec<Token>, stack: &mut Vec<Token>) {
+pub fn push_op(operator: Operator, statement: &mut Vec<Token>, stack: &mut Vec<Token>) {
     // FIXME:   If the operator is a right parantheses empty the stack up to the left
     //          bracket and push it into the statement
     match stack.pop() {
@@ -16,14 +16,14 @@ fn push_op(operator: Operator, statement: &mut Vec<Token>, stack: &mut Vec<Token
                     statement.push(stack_top);
                     push_op(operator, statement, stack);
                 }
-                _ => panic!("Non-Operator was added to Operator only stack")
+                _ => panic!("Non-Operator '{}' was added to Operator only stack", stack_top)
             }
         }
         None => stack.push(Token::Operator(operator)),
     }
 }
 
-fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
+pub fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::with_capacity(tokens.len());
     let mut stack: Vec<Token> = Vec::new();
     for token in tokens {
@@ -36,9 +36,17 @@ fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
         }
     }
 
-    // TODO: Implement checks
-    //          - If the stack is not empty
-    //          - If the operands are not in the same order
+    // NOTE:       The stack must be reversed before it is appended,
+    //          as the elements of the stack are popped of the end
+    //          and not appended such that that first element is added
+    //          before the rest.
+    //
+    // TODO:    - Reversing the vector is not an ideal solution performance-wise,
+    //          but it will do for now.
+    //          - Implement checks:
+    //              - If the stack is not empty
+    //              - If the operands are not in the same order
+    stack.reverse();
     statement.append(&mut stack);
     statement
 }
