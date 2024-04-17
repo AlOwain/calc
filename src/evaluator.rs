@@ -16,7 +16,7 @@ pub fn push_op(operator: Operator, statement: &mut Vec<Token>, stack: &mut Vec<T
                     statement.push(stack_top);
                     push_op(operator, statement, stack);
                 }
-                _ => panic!("Non-Operator was added to Operator only stack")
+                _ => panic!("Non-Operator '{}' was added to Operator only stack", stack_top)
             }
         }
         None => stack.push(Token::Operator(operator)),
