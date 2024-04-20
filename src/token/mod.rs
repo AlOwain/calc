@@ -26,4 +26,3 @@ impl fmt::Display for Token {
 
 pub use operator::Operator;
 pub use operand::Operand;
-pub use operand::Numeric;

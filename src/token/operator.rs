@@ -24,40 +24,28 @@ fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
     let lhs: i64 = lhs.into();
     let rhs: i64 = rhs.into();
 
-    let ans = lhs + rhs;
-    Operand::Numeric(Numeric {
-        value: ans,
-    })
+    Operand::Numeric(lhs + rhs)
 }
 
 fn handle_subtract(lhs: &Operand, rhs: &Operand) -> Operand {
     let lhs: i64 = lhs.into();
     let rhs: i64 = rhs.into();
 
-    let ans = lhs - rhs;
-    Operand::Numeric(Numeric {
-        value: ans,
-    })
+    Operand::Numeric(lhs - rhs)
 }
 
 fn handle_multiply(lhs: &Operand, rhs: &Operand) -> Operand {
     let lhs: i64 = lhs.into();
     let rhs: i64 = rhs.into();
 
-    let ans = lhs * rhs;
-    Operand::Numeric(Numeric {
-        value: ans,
-    })
+    Operand::Numeric(lhs * rhs)
 }
 
 fn handle_divide(lhs: &Operand, rhs: &Operand) -> Operand {
     let lhs: i64 = lhs.into();
     let rhs: i64 = rhs.into();
 
-    let ans = lhs / rhs;
-    Operand::Numeric(Numeric {
-        value: ans,
-    })
+    Operand::Numeric(lhs / rhs)
 }
 
 // FIXME: when `Multiply` is compared with `Divide` or `Add` with `Subtract` it must be equal

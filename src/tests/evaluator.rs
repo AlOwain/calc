@@ -6,12 +6,12 @@ use crate::token::*;
 fn operator_push() {
     let mut stack: Vec<Token> = Vec::new();
     let mut statement: Vec<Token> = vec!(
-        Token::Operand(Operand::Numeric(Numeric {value: 3})),
+        Token::Operand(Operand::Numeric(3)),
     );
     push_op(Operator::Add, &mut statement, &mut stack);
 
     let statement_post = vec!(
-        Token::Operand(Operand::Numeric(Numeric {value: 3})),
+        Token::Operand(Operand::Numeric(3)),
     );
     let stack_post = vec!(
         Token::Operator(Operator::Add),
@@ -23,17 +23,17 @@ fn operator_push() {
 #[test]
 fn postfix() {
     let equation = vec!(
-        Token::Operand(Operand::Numeric(Numeric {value: 3})),
+        Token::Operand(Operand::Numeric(3)),
         Token::Operator(Operator::Add),
-        Token::Operand(Operand::Numeric(Numeric {value: 4})),
+        Token::Operand(Operand::Numeric(4)),
         Token::Operator(Operator::Multiply),
-        Token::Operand(Operand::Numeric(Numeric {value: 5})),
+        Token::Operand(Operand::Numeric(5)),
     );
 
     let postfixed = vec!(
-        Token::Operand(Operand::Numeric(Numeric {value: 3})),
-        Token::Operand(Operand::Numeric(Numeric {value: 4})),
-        Token::Operand(Operand::Numeric(Numeric {value: 5})),
+        Token::Operand(Operand::Numeric(3)),
+        Token::Operand(Operand::Numeric(4)),
+        Token::Operand(Operand::Numeric(5)),
         Token::Operator(Operator::Multiply),
         Token::Operator(Operator::Add),
     );
@@ -45,13 +45,9 @@ fn postfix() {
 #[test]
 fn evaluator() {
     let equation = vec!(
-        Token::Operand(Operand::Numeric(Numeric {
-            value: 6,
-        })),
+        Token::Operand(Operand::Numeric(6)),
         Token::Operator(Operator::Subtract),
-        Token::Operand(Operand::Numeric(Numeric {
-            value: 3,
-        })),
+        Token::Operand(Operand::Numeric(3)),
     );
     assert_eq!(evaluate(equation), 3);
 }

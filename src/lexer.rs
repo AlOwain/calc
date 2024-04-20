@@ -38,9 +38,9 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
                     token = match &token {
                         Token::Operand(zy) => {
                             let op_value: i64 = zy.into();
-                            Token::Operand(Operand::Numeric(Numeric {
-                                value: (op_value * 10) + (character as u8 - b'0') as i64,
-                            }))
+                            Token::Operand(Operand::Numeric(
+                                (op_value * 10) + (character as u8 - b'0') as i64
+                            ))
                         } ,
                         Token::None => Token::Operand(Operand::from(character)),
                         _ => err!("Unexpected token: \'{}\'", word),
