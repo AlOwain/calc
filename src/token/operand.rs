@@ -1,4 +1,5 @@
 use std::fmt;
+use crate::err;
 
 #[derive(Debug, PartialEq)]
 pub struct Numeric {
@@ -28,7 +29,7 @@ impl From<char> for Operand {
                     value: (val as u8 - b'0') as i64
                 })
             }
-            _ => todo!("Operands could not be created from non-numeral character \'{}\'", val),
+            _ => err!("Converting \'{}\' to Operand type unsupported", val),
         }
     }
 }
