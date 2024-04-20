@@ -12,15 +12,6 @@ pub enum Operand {
     None
 }
 
-impl From<String> for Operand {
-    fn from(val: String) -> Self {
-        let val = val.parse().expect("calc: Unexpected value given as operand \'{value}\'");
-        Operand::Numeric(Numeric {
-            value: val,
-        })
-    }
-}
-
 impl From<char> for Operand {
     fn from(val: char) -> Self {
         match val {
