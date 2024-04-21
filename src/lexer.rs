@@ -35,7 +35,7 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
                     curr_op = match &curr_op {
                         Operand::Numeric(val) => {
                             Operand::Numeric(
-                                (val * 10) + (*val as i64 - 48)
+                                (val * 10) + (character as i64 - 48)
                             )
                         },
                         Operand::None => Operand::from(character),

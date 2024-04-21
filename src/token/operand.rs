@@ -19,7 +19,7 @@ impl From<char> for Operand {
 impl Into<i64> for &Operand {
     fn into(self) -> i64 {
         match self {
-            Operand::Numeric(val) => *val as i64,
+            Operand::Numeric(val) => *val,
             _ => todo!("Conversion into values has not been implemented yet for non-numeral operands."),
         }
     }
