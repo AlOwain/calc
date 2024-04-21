@@ -10,9 +10,7 @@ pub enum Operand {
 impl From<char> for Operand {
     fn from(val: char) -> Self {
         match val {
-            '0'..='9' => {
-                Operand::Numeric((val as u8 - b'0') as i64)
-            }
+            '0'..='9' => Operand::Numeric(val as i64 - 48),
             _ => err!("Converting \'{}\' to Operand type unsupported", val),
         }
     }
@@ -31,7 +29,7 @@ impl fmt::Display for Operand {
     fn fmt(&self, format: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Operand::Numeric(val) => {
-                write!(format, "{}", *val as i64)
+                write!(format, "{}", *val)
             }
             _ => todo!("Failed to display non-numeric Operand type.")
         }
