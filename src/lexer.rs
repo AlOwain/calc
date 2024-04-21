@@ -1,11 +1,19 @@
 use crate::token::*;
 use crate::err;
 
-macro_rules! flush {
-    ($token:expr, $statement:expr) => {
+macro_rules! flush_operand {
+    ($operand: expr, $statement: expr) => {
         {
-            if !matches!($token, Token::None) { $statement.push($token); }
-            $token = Token::None
+            if !matches!($operand, Operand::None) { $statement.push(Token::Operand($operand)); }
+            $operand = Operand::None
+        }
+    };
+}
+macro_rules! flush_both {
+    ($operand: expr, $operator: expr, $statement: expr) => {
+        {
+            flush_operand!($operand, $statement);
+            $statement.push(Token::Operator($operator))
         }
     };
 }
@@ -13,43 +21,31 @@ macro_rules! flush {
 pub fn lexer(args: Vec<String>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::new();
 
-    let mut token = Token::None;
+    let mut curr_op = Operand::None;
     for word in args.iter() {
         for character in word.chars() {
             match character {
-                ' ' => flush!(token, statement),
-                '*' => {
-                    flush!(token, statement);
-                    statement.push(Token::Operator(Operator::Multiply));
-                }
-                '/' => {
-                    flush!(token, statement);
-                    statement.push(Token::Operator(Operator::Divide));
-                }
-                '-' => {
-                    flush!(token, statement);
-                    statement.push(Token::Operator(Operator::Subtract));
-                }
-                '+' => {
-                    flush!(token, statement);
-                    statement.push(Token::Operator(Operator::Add));
-                }
+                ' ' => flush_operand!(curr_op, statement),
+                '*' => flush_both!(curr_op, Operator::Multiply, statement),
+                '/' => flush_both!(curr_op, Operator::Divide, statement),
+                '-' => flush_both!(curr_op, Operator::Subtract, statement),
+                '+' => flush_both!(curr_op, Operator::Add, statement),
+
                 '0'..='9' => {
-                    token = match &token {
-                        Token::Operand(zy) => {
-                            let op_value: i64 = zy.into();
-                            Token::Operand(Operand::Numeric(
-                                (op_value * 10) + (character as u8 - b'0') as i64
-                            ))
-                        } ,
-                        Token::None => Token::Operand(Operand::from(character)),
-                        _ => err!("Unexpected token: \'{}\'", word),
+                    curr_op = match &curr_op {
+                        Operand::Numeric(val) => {
+                            Operand::Numeric(
+                                (val * 10) + (character as u8 - b'0') as i64
+                            )
+                        },
+                        Operand::None => Operand::from(character),
+                        _ => err!("Invalid operand type: \'{}\'", word),
                     }
                 }
                 _ => { err!("Invalid token: \'{}\'", word); }
             }
         }
-        flush!(token, statement);
+        flush_operand!(curr_op, statement);
     }
     statement
 }
