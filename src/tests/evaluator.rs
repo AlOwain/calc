@@ -4,17 +4,17 @@ use crate::token::*;
 
 #[test]
 fn operator_push() {
-    let mut stack: Vec<Token> = Vec::new();
+    let mut stack: Vec<Operator> = Vec::new();
     let mut statement: Vec<Token> = vec!(
         Token::Operand(Operand::Numeric(3)),
     );
-    push_op(Operator::Add, &mut statement, &mut stack);
+    push_op(Operator::Add, &mut stack, &mut statement);
 
     let statement_post = vec!(
         Token::Operand(Operand::Numeric(3)),
     );
     let stack_post = vec!(
-        Token::Operator(Operator::Add),
+        Operator::Add,
     );
     assert_eq!(statement, statement_post);
     assert_eq!(stack, stack_post);

@@ -1,36 +1,31 @@
 use crate::token::*;
 use crate::err;
 
-pub fn push_op(operator: Operator, statement: &mut Vec<Token>, stack: &mut Vec<Token>) {
+pub fn push_op(operator: Operator, stack: &mut Vec<Operator>, statement: &mut Vec<Token>) {
     // FIXME:   If the operator is a right parantheses empty the stack up to the left
     //          bracket and push it into the statement
     match stack.pop() {
         Some(stack_top) => {
-            match stack_top {
-                Token::Operator(ref stack_op) => {
-                    if operator > *stack_op {
-                        stack.push(stack_top);
-                        stack.push(Token::Operator(operator));
-                        return;
-                    }
-                    statement.push(stack_top);
-                    push_op(operator, statement, stack);
-                }
-                _ => panic!("Non-Operator '{}' was added to Operator only stack", stack_top)
+            if operator > stack_top {
+                stack.push(stack_top);
+                stack.push(operator);
+                return;
             }
+            statement.push(Token::Operator(stack_top));
+            push_op(operator, stack, statement);
         }
-        None => stack.push(Token::Operator(operator)),
+        None => stack.push(operator),
     }
 }
 
 pub fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::with_capacity(tokens.len());
-    let mut stack: Vec<Token> = Vec::new();
+    let mut stack: Vec<Operator> = Vec::new();
     for token in tokens {
         match token {
             Token::Operand(_) => statement.push(token),
             Token::Operator(operator) => {
-                push_op(operator, &mut statement, &mut stack);
+                push_op(operator, &mut stack, &mut statement);
             }
             _ => err!("Error while parsing tokens, token type undefined."),
         }
@@ -43,8 +38,9 @@ pub fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
     //
     //              Reversing the vector is not an ideal solution performance-wise,
     //          but it will do for now.
-    stack.reverse();
-    statement.append(&mut stack);
+    while !stack.is_empty() {
+        statement.push(Token::Operator(stack.pop().unwrap()));
+    }
     statement
 }
 
