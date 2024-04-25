@@ -1,9 +1,11 @@
+use crate::err;
 use crate::token::*;
+
 use std::cmp::Ordering;
 
 pub fn get_order(op: &Operator) -> u8 {
     for (k, v) in ORDER.iter() { if op == v { return *k; } };
-    todo!("Order of operator '{}' not yet implemented", op);
+    err!("Operator \'{}\' order not known", op);
 }
 const ORDER: [(u8, Operator); 4]= [
     (2, Operator::Multiply),
@@ -17,7 +19,6 @@ pub enum Operator {
     Subtract,
     Multiply,
     Divide,
-    None,
 }
 
 fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
@@ -63,7 +64,9 @@ impl fmt::Display for Operator {
             Operator::Subtract  => write!(format, "-"),
             Operator::Multiply  => write!(format, "*"),
             Operator::Divide    => write!(format, "/"),
-            _ => todo!("Failed to display non-numeric Operand type."),
+
+            // NOTE: be careful, an infinite recursive loop may occur here.
+            _ => err!("Failed to display Operator \'{:?}\'.", self),
         }
     }
 }
@@ -75,7 +78,8 @@ impl Operator {
             Operator::Subtract  => handle_subtract(lhs, rhs),
             Operator::Multiply  => handle_multiply(lhs, rhs),
             Operator::Divide    => handle_divide(lhs, rhs),
-            _ => todo!("Operations on other types have not been implemented yet!")
+
+            _ => err!("Operation \'{}\' is not supported", self)
         }
     }
 

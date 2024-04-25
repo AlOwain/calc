@@ -27,7 +27,6 @@ pub fn to_postfix(tokens: Vec<Token>) -> Vec<Token> {
             Token::Operator(operator) => {
                 push_op(operator, &mut stack, &mut statement);
             }
-            _ => err!("Error while parsing tokens, token type undefined."),
         }
     }
 
@@ -57,7 +56,6 @@ fn solve(problem: &mut Vec<Token>) -> Operand {
             let lhs = solve(problem);
             op.do_operation(&lhs, &rhs)
         },
-        _ => err!("Token parsing failed."),
     }
 
 }

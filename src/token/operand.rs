@@ -20,7 +20,7 @@ impl Into<i64> for &Operand {
     fn into(self) -> i64 {
         match self {
             Operand::Numeric(val) => *val,
-            _ => todo!("Conversion into values has not been implemented yet for non-numeral operands."),
+            _ => err!("Failed to convert Operand \'{}\'.", self),
         }
     }
 }
@@ -31,7 +31,9 @@ impl fmt::Display for Operand {
             Operand::Numeric(val) => {
                 write!(format, "{}", *val)
             }
-            _ => todo!("Failed to display non-numeric Operand type.")
+
+            // NOTE: be careful, an infinite recursive loop may occur here.
+            _ => err!("Failed to display Operand \'{:?}\'.", self),
         }
     }
 }

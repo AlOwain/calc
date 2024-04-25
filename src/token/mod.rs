@@ -7,7 +7,6 @@ use std::fmt;
 pub enum Token {
     Operand(operand::Operand),
     Operator(operator::Operator),
-    None
 }
 
 impl fmt::Display for Token {
@@ -19,7 +18,6 @@ impl fmt::Display for Token {
             Token::Operator(operator) => {
                 write!(format, "{}", format!("{}", operator))
             }
-            _ => todo!("Failed to display unimplemented Token type; only Operand and Operator Tokens can be displayed")
         }
     }
 }
