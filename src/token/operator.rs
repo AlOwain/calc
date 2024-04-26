@@ -22,31 +22,19 @@ pub enum Operator {
 }
 
 fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
-    let lhs: i64 = lhs.into();
-    let rhs: i64 = rhs.into();
-
-    Operand::Numeric(lhs + rhs)
+    Operand::Numeric(lhs.into_i64() + rhs.into_i64())
 }
 
 fn handle_subtract(lhs: &Operand, rhs: &Operand) -> Operand {
-    let lhs: i64 = lhs.into();
-    let rhs: i64 = rhs.into();
-
-    Operand::Numeric(lhs - rhs)
+    Operand::Numeric(lhs.into_i64() - rhs.into_i64())
 }
 
 fn handle_multiply(lhs: &Operand, rhs: &Operand) -> Operand {
-    let lhs: i64 = lhs.into();
-    let rhs: i64 = rhs.into();
-
-    Operand::Numeric(lhs * rhs)
+    Operand::Numeric(lhs.into_i64() * rhs.into_i64())
 }
 
 fn handle_divide(lhs: &Operand, rhs: &Operand) -> Operand {
-    let lhs: i64 = lhs.into();
-    let rhs: i64 = rhs.into();
-
-    Operand::Numeric(lhs / rhs)
+    Operand::Numeric(lhs.into_i64() / rhs.into_i64())
 }
 
 // FIXME: when `Multiply` is compared with `Divide` or `Add` with `Subtract` it must be equal

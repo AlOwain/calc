@@ -30,10 +30,11 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
                 '0'..='9' => {
                     curr_op = match &curr_op {
                         Some(operand) => {
-                            let val: i64 = operand.into();
-                            Some(Operand::Numeric((val * 10) + (character as i64 - 48)))
+                            Some(Operand::Numeric(
+                                (operand.into_i64() * 10) + (character as i64 - 48)
+                            ))
                         }
-                        None => Some(Operand::from(character)),
+                        None => Operand::from_char(character),
                     }
                 }
                 _ => { err!("Invalid token: \'{}\'", word); }

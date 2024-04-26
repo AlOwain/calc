@@ -62,5 +62,5 @@ fn solve(problem: &mut Vec<Token>) -> Operand {
 
 pub fn evaluate(operation: Vec<Token>) -> i64 {
     let mut operation = to_postfix(operation);
-    (&solve(&mut operation)).into()
+    solve(&mut operation).into_i64()
 }

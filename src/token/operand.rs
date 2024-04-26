@@ -5,21 +5,16 @@ use crate::err;
 pub enum Operand {
     Numeric(i64),
 }
-
-impl From<char> for Operand {
-    fn from(val: char) -> Self {
-        match val {
-            '0'..='9' => Operand::Numeric(val as i64 - 48),
-            _ => err!("Converting \'{}\' to Operand type unsupported", val),
-        }
-    }
-}
-
-impl Into<i64> for &Operand {
-    fn into(self) -> i64 {
+impl Operand {
+    pub fn into_i64(&self) -> i64 {
         match self {
             Operand::Numeric(val) => *val,
-            _ => err!("Failed to convert Operand \'{}\'.", self),
+        }
+    }
+    pub fn from_char(val: char) -> Option<Self> {
+        match val {
+            '0'..='9' => Some(Operand::Numeric(val as i64 - 48)),
+            _ => None,
         }
     }
 }
