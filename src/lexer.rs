@@ -2,26 +2,22 @@ use crate::token::*;
 use crate::err;
 
 macro_rules! flush_operand {
-    ($operand: expr, $statement: expr) => {
-        {
-            if !matches!($operand, Operand::None) { $statement.push(Token::Operand($operand)); }
-            $operand = Operand::None
-        }
-    };
+    ($operand: expr, $statement: expr) => {{
+        if !matches!($operand, None) { $statement.push(Token::Operand($operand.unwrap())); }
+        $operand = None
+    }};
 }
 macro_rules! flush_both {
-    ($operand: expr, $operator: expr, $statement: expr) => {
-        {
-            flush_operand!($operand, $statement);
-            $statement.push(Token::Operator($operator))
-        }
-    };
+    ($operand: expr, $operator: expr, $statement: expr) => {{
+        flush_operand!($operand, $statement);
+        $statement.push(Token::Operator($operator))
+    }};
 }
 
 pub fn lexer(args: Vec<String>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::new();
 
-    let mut curr_op = Operand::None;
+    let mut curr_op = None;
     for word in args.iter() {
         for character in word.chars() {
             match character {
@@ -33,13 +29,11 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
 
                 '0'..='9' => {
                     curr_op = match &curr_op {
-                        Operand::Numeric(val) => {
-                            Operand::Numeric(
-                                (val * 10) + (character as i64 - 48)
-                            )
-                        },
-                        Operand::None => Operand::from(character),
-                        _ => err!("Invalid operand type: \'{}\'", word),
+                        Some(operand) => {
+                            let val: i64 = operand.into();
+                            Some(Operand::Numeric((val * 10) + (character as i64 - 48)))
+                        }
+                        None => Some(Operand::from(character)),
                     }
                 }
                 _ => { err!("Invalid token: \'{}\'", word); }

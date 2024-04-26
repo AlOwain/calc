@@ -4,7 +4,6 @@ use crate::err;
 #[derive(Debug, PartialEq)]
 pub enum Operand {
     Numeric(i64),
-    None
 }
 
 impl From<char> for Operand {
