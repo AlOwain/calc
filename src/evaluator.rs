@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use crate::token::*;
 use crate::err;
 
@@ -6,7 +8,7 @@ pub fn push_op(operator: Operator, stack: &mut Vec<Operator>, statement: &mut Ve
     //          bracket and push it into the statement
     match stack.pop() {
         Some(stack_top) => {
-            if operator > stack_top {
+            if operator.cmp(&stack_top) == Ordering::Greater {
                 stack.push(stack_top);
                 stack.push(operator);
                 return;
