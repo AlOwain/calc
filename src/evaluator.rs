@@ -6,14 +6,13 @@ use crate::err;
 pub fn push_op(operator: Operator, stack: &mut Vec<Operator>, statement: &mut Vec<Token>) {
     // FIXME:   If the operator is a right parantheses empty the stack up to the left
     //          bracket and push it into the statement
-    match stack.pop() {
+    match stack.last() {
         Some(stack_top) => {
             if operator.cmp(&stack_top) == Ordering::Greater {
-                stack.push(stack_top);
                 stack.push(operator);
                 return;
             }
-            statement.push(Token::Operator(stack_top));
+            statement.push(Token::Operator(stack.pop().unwrap()));
             push_op(operator, stack, statement);
         }
         None => stack.push(operator),
