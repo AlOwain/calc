@@ -32,23 +32,15 @@ impl PartialOrd for Operator {
 
 impl fmt::Display for Operator {
     fn fmt(&self, format: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Operator::Add       => write!(format, "+"),
-            Operator::Subtract  => write!(format, "-"),
-            Operator::Multiply  => write!(format, "*"),
-            Operator::Divide    => write!(format, "/"),
-
-            // NOTE: be careful, an infinite recursive loop may occur here.
-            _ => err!("Failed to display Operator \'{:?}\'.", self),
-        }
+        write!(format, "{}", self.symbol())
     }
 }
 
-const ORDER: [(u8, Operator); 4]= [
-    (2, Operator::Multiply),
-    (2, Operator::Divide),
-    (3, Operator::Add),
-    (3, Operator::Subtract),
+const REGISTRY: [(Operator, u8, char); 4]= [
+    (Operator::Multiply,    2, '*'),
+    (Operator::Divide,      2, '/'),
+    (Operator::Add,         3, '+'),
+    (Operator::Subtract,    3, '-'),
 ];
 #[derive(Debug, PartialEq)]
 pub enum Operator {
@@ -59,8 +51,12 @@ pub enum Operator {
 }
 impl Operator {
     pub fn order(&self) -> u8 {
-        for (k, v) in ORDER.iter() { if self == v { return *k; } };
+        for (k, v, _) in REGISTRY.iter() { if self == k { return *v; } };
         err!("Operator \'{}\' order unknown", self);
+    }
+    pub fn symbol(&self) -> char {
+        for (k, _, v) in REGISTRY.iter() { if self == k { return *v; } };
+        err!("Operator \'{}\' symbol unknown", self);
     }
 
     pub fn do_operation(self, lhs: &Operand, rhs: &Operand) -> Operand {
