@@ -36,7 +36,7 @@ const REGISTRY: [(Operator, u8, char, fn(&Operand, &Operand) -> Operand); 4]= [
     (Operator::Add,         3, '+', handle_add),
     (Operator::Subtract,    3, '-', handle_subtract),
 ];
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Operator {
     Add,
     Subtract,
@@ -57,6 +57,10 @@ impl Operator {
         err!("Operator \'{}\' handler unknown", self);
     }
 
+    pub fn from_char(val: &char) -> Option<Self> {
+        for (v, _, k, _) in REGISTRY.iter() { if val == k { return Some(v.clone()); } };
+        None
+    }
     pub fn operate(self, lhs: &Operand, rhs: &Operand) -> Operand {
         self.handler()(lhs, rhs)
     }
