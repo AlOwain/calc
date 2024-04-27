@@ -22,14 +22,18 @@ impl fmt::Display for Operator {
     }
 }
 
-const REGISTRY: [(Operator, u8, char, fn(&Operand, &Operand) -> Operand); 4]= [
-    (Operator::Multiply,    2, '*', handle_multiply),
-    (Operator::Divide,      2, '/', handle_divide),
-    (Operator::Add,         3, '+', handle_add),
-    (Operator::Subtract,    3, '-', handle_subtract),
+const REGISTRY: [(Operator, u8, char, Option<fn(&Operand, &Operand) -> Operand>); 6]= [
+    (Operator::Multiply,    3, '*', Some(handle_multiply)),
+    (Operator::Divide,      3, '/', Some(handle_divide)),
+    (Operator::Add,         4, '+', Some(handle_add)),
+    (Operator::Subtract,    4, '-', Some(handle_subtract)),
+    (Operator::LParan,      5, '(', None),
+    (Operator::RParan,      5, ')', None),
 ];
 #[derive(Debug, Clone, PartialEq)]
 pub enum Operator {
+    LParan,
+    RParan,
     Add,
     Subtract,
     Multiply,
@@ -45,7 +49,7 @@ impl Operator {
         err!("Operator \'{}\' symbol unknown", self);
     }
     pub fn handler(&self) -> fn(&Operand, &Operand) -> Operand {
-        for (k, _, _, v) in REGISTRY.iter() { if self == k { return *v; } };
+        for (k, _, _, v) in REGISTRY.iter() { if self == k && !v.is_none() { return v.unwrap(); } };
         err!("Operator \'{}\' handler unknown", self);
     }
 

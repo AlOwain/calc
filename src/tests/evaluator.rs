@@ -53,11 +53,34 @@ fn multi_digit_evaluator() {
 }
 
 #[test]
-fn evaluator() {
+fn evaluator_simple() {
     let equation = vec!(
         Token::Operand(Operand::Numeric(6)),
         Token::Operator(Operator::Subtract),
         Token::Operand(Operand::Numeric(3)),
     );
     assert_eq!(evaluate(equation), 3);
+}
+
+#[test]
+fn evaluator_parantheses() {
+    let equation = vec!(
+        Token::Operator(Operator::LParan),
+        Token::Operator(Operator::LParan),
+        Token::Operand(Operand::Numeric(100)),
+        Token::Operator(Operator::Multiply),
+        Token::Operand(Operand::Numeric(2)),
+        Token::Operator(Operator::RParan),
+        Token::Operator(Operator::Subtract),
+        Token::Operator(Operator::LParan),
+        Token::Operand(Operand::Numeric(50)),
+        Token::Operator(Operator::Divide),
+        Token::Operand(Operand::Numeric(2)),
+        Token::Operator(Operator::RParan),
+        Token::Operator(Operator::RParan),
+        Token::Operator(Operator::Multiply),
+        Token::Operand(Operand::Numeric(3)),
+    );
+
+    assert_eq!(evaluate(equation), 525);
 }
