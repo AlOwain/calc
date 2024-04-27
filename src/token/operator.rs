@@ -3,23 +3,8 @@ use crate::token::*;
 
 use std::cmp::Ordering;
 
-pub fn get_order(op: &Operator) -> u8 {
-    for (k, v) in ORDER.iter() { if op == v { return *k; } };
-    err!("Operator \'{}\' order not known", op);
-}
-const ORDER: [(u8, Operator); 4]= [
-    (2, Operator::Multiply),
-    (2, Operator::Divide),
-    (3, Operator::Add),
-    (3, Operator::Subtract),
-];
-#[derive(Debug, PartialEq)]
-pub enum Operator {
-    Add,
-    Subtract,
-    Multiply,
-    Divide,
-}
+
+
 
 fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
     Operand::Numeric(lhs.into_i64() + rhs.into_i64())
@@ -59,7 +44,25 @@ impl fmt::Display for Operator {
     }
 }
 
+const ORDER: [(u8, Operator); 4]= [
+    (2, Operator::Multiply),
+    (2, Operator::Divide),
+    (3, Operator::Add),
+    (3, Operator::Subtract),
+];
+#[derive(Debug, PartialEq)]
+pub enum Operator {
+    Add,
+    Subtract,
+    Multiply,
+    Divide,
+}
 impl Operator {
+    pub fn order(&self) -> u8 {
+        for (k, v) in ORDER.iter() { if self == v { return *k; } };
+        err!("Operator \'{}\' order unknown", self);
+    }
+
     pub fn do_operation(self, lhs: &Operand, rhs: &Operand) -> Operand {
         match self {
             Operator::Add       => handle_add(lhs, rhs),
@@ -72,8 +75,8 @@ impl Operator {
     }
 
     pub fn cmp(&self, other: &Operator) -> Ordering {
-        let self_order = get_order(self);
-        let other_order = get_order(other);
+        let self_order = self.order();
+        let other_order = other.order();
 
         if self_order < other_order { return Ordering::Greater; }
         if self_order > other_order { return Ordering::Less; }
