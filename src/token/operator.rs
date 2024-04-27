@@ -16,14 +16,6 @@ fn handle_divide(lhs: &Operand, rhs: &Operand) -> Operand {
     Operand::Numeric(lhs.into_i64() / rhs.into_i64())
 }
 
-// FIXME: when `Multiply` is compared with `Divide` or `Add` with `Subtract` it must be equal
-// instead of being definitively larger or smaller.
-impl PartialOrd for Operator {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
 impl fmt::Display for Operator {
     fn fmt(&self, format: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(format, "{}", self.symbol())
