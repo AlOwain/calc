@@ -23,12 +23,12 @@ impl fmt::Display for Operator {
 }
 
 const REGISTRY: [(Operator, u8, char, Option<fn(&Operand, &Operand) -> Operand>); 6]= [
-    (Operator::LParan,      2, '(', None),
-    (Operator::RParan,      2, ')', None),
     (Operator::Multiply,    3, '*', Some(handle_multiply)),
     (Operator::Divide,      3, '/', Some(handle_divide)),
     (Operator::Add,         4, '+', Some(handle_add)),
     (Operator::Subtract,    4, '-', Some(handle_subtract)),
+    (Operator::LParan,      5, '(', None),
+    (Operator::RParan,      5, ')', None),
 ];
 #[derive(Debug, Clone, PartialEq)]
 pub enum Operator {

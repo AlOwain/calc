@@ -4,10 +4,22 @@ use crate::token::*;
 use crate::err;
 
 pub fn push_op(operator: Operator, stack: &mut Vec<Operator>, statement: &mut Vec<Token>) {
+    if matches!(operator, Operator::LParan) {
+        stack.push(operator);
+        return;
+    }
+
     // FIXME:   If the operator is a right parantheses empty the stack up to the left
     //          bracket and push it into the statement
     match stack.last() {
         Some(stack_top) => {
+            if matches!(operator, Operator::RParan) {
+                loop {
+                    let popped = stack.pop().unwrap();
+                    if matches!(popped, Operator::LParan) { return; }
+                    statement.push(Token::Operator(popped));
+                }
+            }
             if operator.cmp(&stack_top) == Ordering::Greater {
                 stack.push(operator);
                 return;
