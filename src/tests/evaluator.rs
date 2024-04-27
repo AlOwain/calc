@@ -43,6 +43,15 @@ fn postfix() {
 // To generate similar test cases, use the following snippet:
 // https://gist.github.com/AlOwain/1885b961a219a483e7d030f0929e8369
 #[test]
+fn multi_digit_evaluator() {
+    let equation = vec!(
+        Token::Operand(Operand::Numeric(16672)),
+        Token::Operator(Operator::Multiply),
+        Token::Operand(Operand::Numeric(94193)),
+    );
+    assert_eq!(evaluate(equation), 1570385696);
+}
+#[test]
 fn evaluator() {
     let equation = vec!(
         Token::Operand(Operand::Numeric(6)),
