@@ -6,15 +6,12 @@ use std::cmp::Ordering;
 fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
     Operand::Numeric(lhs.into_i64() + rhs.into_i64())
 }
-
 fn handle_subtract(lhs: &Operand, rhs: &Operand) -> Operand {
     Operand::Numeric(lhs.into_i64() - rhs.into_i64())
 }
-
 fn handle_multiply(lhs: &Operand, rhs: &Operand) -> Operand {
     Operand::Numeric(lhs.into_i64() * rhs.into_i64())
 }
-
 fn handle_divide(lhs: &Operand, rhs: &Operand) -> Operand {
     Operand::Numeric(lhs.into_i64() / rhs.into_i64())
 }
@@ -60,7 +57,7 @@ impl Operator {
         err!("Operator \'{}\' handler unknown", self);
     }
 
-    pub fn do_operation(self, lhs: &Operand, rhs: &Operand) -> Operand {
+    pub fn operate(self, lhs: &Operand, rhs: &Operand) -> Operand {
         self.handler()(lhs, rhs)
     }
 

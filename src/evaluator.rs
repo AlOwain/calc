@@ -54,7 +54,7 @@ fn solve(problem: &mut Vec<Token>) -> Operand {
         Token::Operator(op) => {
             let rhs = solve(problem);
             let lhs = solve(problem);
-            op.do_operation(&lhs, &rhs)
+            op.operate(&lhs, &rhs)
         },
     }
 

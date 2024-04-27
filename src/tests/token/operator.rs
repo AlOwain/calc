@@ -36,7 +36,7 @@ fn operator() {
     let rhs = Operand::Numeric(1);
     let add = Operator::Add;
     assert_eq!(
-        add.do_operation(&lhs, &rhs),
+        add.operate(&lhs, &rhs),
         Operand::Numeric(2)
     );
 }
