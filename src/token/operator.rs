@@ -3,9 +3,6 @@ use crate::token::*;
 
 use std::cmp::Ordering;
 
-
-
-
 fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
     Operand::Numeric(lhs.into_i64() + rhs.into_i64())
 }
@@ -36,11 +33,11 @@ impl fmt::Display for Operator {
     }
 }
 
-const REGISTRY: [(Operator, u8, char); 4]= [
-    (Operator::Multiply,    2, '*'),
-    (Operator::Divide,      2, '/'),
-    (Operator::Add,         3, '+'),
-    (Operator::Subtract,    3, '-'),
+const REGISTRY: [(Operator, u8, char, fn(&Operand, &Operand) -> Operand); 4]= [
+    (Operator::Multiply,    2, '*', handle_multiply),
+    (Operator::Divide,      2, '/', handle_divide),
+    (Operator::Add,         3, '+', handle_add),
+    (Operator::Subtract,    3, '-', handle_subtract),
 ];
 #[derive(Debug, PartialEq)]
 pub enum Operator {
@@ -51,23 +48,20 @@ pub enum Operator {
 }
 impl Operator {
     pub fn order(&self) -> u8 {
-        for (k, v, _) in REGISTRY.iter() { if self == k { return *v; } };
+        for (k, v, _, _) in REGISTRY.iter() { if self == k { return *v; } };
         err!("Operator \'{}\' order unknown", self);
     }
     pub fn symbol(&self) -> char {
-        for (k, _, v) in REGISTRY.iter() { if self == k { return *v; } };
+        for (k, _, v, _) in REGISTRY.iter() { if self == k { return *v; } };
         err!("Operator \'{}\' symbol unknown", self);
+    }
+    pub fn handler(&self) -> fn(&Operand, &Operand) -> Operand {
+        for (k, _, _, v) in REGISTRY.iter() { if self == k { return *v; } };
+        err!("Operator \'{}\' handler unknown", self);
     }
 
     pub fn do_operation(self, lhs: &Operand, rhs: &Operand) -> Operand {
-        match self {
-            Operator::Add       => handle_add(lhs, rhs),
-            Operator::Subtract  => handle_subtract(lhs, rhs),
-            Operator::Multiply  => handle_multiply(lhs, rhs),
-            Operator::Divide    => handle_divide(lhs, rhs),
-
-            _ => err!("Operation \'{}\' is not supported", self)
-        }
+        self.handler()(lhs, rhs)
     }
 
     pub fn cmp(&self, other: &Operator) -> Ordering {
