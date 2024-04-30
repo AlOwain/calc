@@ -11,6 +11,14 @@ impl Operand {
             Operand::Numeric(val) => *val,
         }
     }
+
+    pub fn from_string(string: String) -> Result<Self, String> {
+        match string.parse() {
+            Ok(value) => Ok(Operand::Numeric(value)),
+            Err(x) => Err(format!("Failed to convert \'{}\' into Operand\n{}", string, x.to_string()))
+        }
+        
+    }
     pub fn from_char(val: char) -> Option<Self> {
         match val {
             '0'..='9' => Some(Operand::Numeric(val as i64 - 48)),

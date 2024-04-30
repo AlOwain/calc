@@ -9,8 +9,6 @@ pub fn push_op(operator: Operator, stack: &mut Vec<Operator>, statement: &mut Ve
         return;
     }
 
-    // FIXME:   If the operator is a right parantheses empty the stack up to the left
-    //          bracket and push it into the statement
     match stack.last() {
         Some(stack_top) => {
             if matches!(operator, Operator::RParan) {

@@ -3,8 +3,9 @@ use crate::err;
 
 macro_rules! flush {
     ($operand: ident, $statement: ident) => {
-        if !$operand.is_none() {
-            $statement.push(Token::Operand($operand.take().unwrap()));
+        if $operand != "" {
+            $statement.push(Token::Operand(Operand::from_string($operand).expect("")));
+            $operand = String::new();
         }
     };
 }
@@ -12,21 +13,12 @@ macro_rules! flush {
 pub fn lexer(args: Vec<String>) -> Vec<Token> {
     let mut statement: Vec<Token> = Vec::new();
 
-    let mut curr_op = None;
+    let mut curr_op = String::new();
     for word in args.iter() {
         for character in word.chars() {
             match &character {
                 ' ' => flush!(curr_op, statement),
-                '0'..='9' => {
-                    curr_op = match &curr_op {
-                        Some(operand) => {
-                            Some(Operand::Numeric(
-                                (operand.into_i64() * 10) + (character as i64 - 48)
-                            ))
-                        }
-                        None => Operand::from_char(character),
-                    }
-                }
+                '0'..='9' => curr_op.push(character),
                 _ => {
                     match Operator::from_char(&character) {
                         Some(operator) => {
