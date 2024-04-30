@@ -19,12 +19,6 @@ impl Operand {
         }
         
     }
-    pub fn from_char(val: char) -> Option<Self> {
-        match val {
-            '0'..='9' => Some(Operand::Numeric(val as i64 - 48)),
-            _ => None,
-        }
-    }
 }
 
 impl fmt::Display for Operand {
