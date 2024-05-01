@@ -12,7 +12,6 @@ struct Cli {
     equation: Vec<String>
 }
 
-
 // ---------------------------
 // This code was provided by ChatGPT, an AI language model developed by OpenAI.
 #[macro_export]
