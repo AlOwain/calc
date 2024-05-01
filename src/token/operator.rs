@@ -4,16 +4,30 @@ use crate::token::*;
 use std::cmp::Ordering;
 
 fn handle_add(lhs: &Operand, rhs: &Operand) -> Operand {
-    Operand::Numeric(lhs.into_i64() + rhs.into_i64())
+    if matches!(lhs, Operand::Numeric(_)) && matches!(rhs, Operand::Numeric(_)) {
+        return Operand::Numeric(lhs.into_i64() + rhs.into_i64());
+    }
+    Operand::Decimal(lhs.into_f64() + rhs.into_f64())
 }
 fn handle_subtract(lhs: &Operand, rhs: &Operand) -> Operand {
-    Operand::Numeric(lhs.into_i64() - rhs.into_i64())
+    if matches!(lhs, Operand::Numeric(_)) && matches!(rhs, Operand::Numeric(_)) {
+        return Operand::Numeric(lhs.into_i64() - rhs.into_i64());
+    }
+    Operand::Decimal(lhs.into_f64() - rhs.into_f64())
 }
 fn handle_multiply(lhs: &Operand, rhs: &Operand) -> Operand {
-    Operand::Numeric(lhs.into_i64() * rhs.into_i64())
+    let result = Operand::Decimal(lhs.into_f64() * rhs.into_f64());
+    if result.into_f64().fract() == 0.0 {
+        return Operand::Numeric(result.into_i64())
+    }
+    result
 }
 fn handle_divide(lhs: &Operand, rhs: &Operand) -> Operand {
-    Operand::Numeric(lhs.into_i64() / rhs.into_i64())
+    let result = Operand::Decimal(lhs.into_f64() / rhs.into_f64());
+    if result.into_f64().fract() == 0.0 {
+        return Operand::Numeric(result.into_i64())
+    }
+    result
 }
 
 impl fmt::Display for Operator {

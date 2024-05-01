@@ -13,6 +13,12 @@ impl Operand {
             Operand::Decimal(val) => *val as i64,
         }
     }
+    pub fn into_f64(&self) -> f64 {
+        match self {
+            Operand::Numeric(val) => *val as f64,
+            Operand::Decimal(val) => *val,
+        }
+    }
 
     pub fn from_string(string: &str) -> Result<Option<Self>, ParseFloatError> {
         match string.parse::<f64>() {
