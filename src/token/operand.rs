@@ -26,13 +26,28 @@ impl Operand {
             Err(err) => Err(err),
         }
     }
+
+    #[allow(unreachable_patterns)]
+    pub fn to_string(&self) -> String {
+        match self {
+            Operand::Numeric(val) => val.to_string(),
+            Operand::Decimal(val) => val.to_string(),
+
+            // NOTE: be careful, an infinite recursive loop may occur here.
+            _ => err!("Stringinfying Operand \'{:?}\' failed.", self),
+        }
+    }
 }
 
+#[allow(unreachable_patterns)]
 impl fmt::Display for Operand {
     fn fmt(&self, format: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Operand::Numeric(val) => {
-                write!(format, "{}", *val)
+            Operand::Numeric(_) => {
+                write!(format, "{}", self.to_string())
+            }
+            Operand::Decimal(_) => {
+                write!(format, "{}", self.to_string())
             }
 
             // NOTE: be careful, an infinite recursive loop may occur here.

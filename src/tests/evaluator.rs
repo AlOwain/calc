@@ -49,7 +49,7 @@ fn multi_digit_evaluator() {
         Token::Operator(Operator::Multiply),
         Token::Operand(Operand::Numeric(94193)),
     );
-    assert_eq!(evaluate(equation), 1570385696);
+    assert_eq!(evaluate(equation).into_i64(), 1570385696);
 }
 
 #[test]
@@ -59,7 +59,7 @@ fn evaluator_simple() {
         Token::Operator(Operator::Subtract),
         Token::Operand(Operand::Numeric(3)),
     );
-    assert_eq!(evaluate(equation), 3);
+    assert_eq!(evaluate(equation).into_i64(), 3);
 }
 
 #[test]
@@ -82,5 +82,5 @@ fn evaluator_parantheses() {
         Token::Operand(Operand::Numeric(3)),
     );
 
-    assert_eq!(evaluate(equation), 525);
+    assert_eq!(evaluate(equation).into_i64(), 525);
 }
