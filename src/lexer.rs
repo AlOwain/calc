@@ -4,7 +4,15 @@ use crate::err;
 macro_rules! flush {
     ($operand: ident, $statement: ident) => {
         if $operand != "" {
-            $statement.push(Token::Operand(Operand::from_string($operand).expect("")));
+            match Operand::from_string(&$operand) {
+                Ok(operand) => {
+                    match operand {
+                        Some(val) => $statement.push(Token::Operand(val)),
+                        _ => ()
+                    }
+                }
+                Err(err) => err!("Parsing Operand \'{}\' failed.\n{}", $operand, err)
+            }
             $operand = String::new();
         }
     };
@@ -19,6 +27,7 @@ pub fn lexer(args: Vec<String>) -> Vec<Token> {
             match &character {
                 ' ' => flush!(curr_op, statement),
                 '0'..='9' => curr_op.push(character),
+                '.' => curr_op.push(character),
                 _ => {
                     match Operator::from_char(&character) {
                         Some(operator) => {

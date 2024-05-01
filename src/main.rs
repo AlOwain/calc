@@ -20,7 +20,8 @@ macro_rules! err {
     ($fmt:expr $(, $($arg:tt)*)?) => {
         {
             eprint!("calc: ");
-            eprintln!($fmt $(, $($arg)*)?);
+            eprint!($fmt $(, $($arg)*)?);
+            eprint!(".");
             std::process::exit(1);
         }
     };

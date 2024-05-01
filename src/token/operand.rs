@@ -1,23 +1,30 @@
-use std::fmt;
+use std::{fmt, num::ParseFloatError};
 use crate::err;
 
 #[derive(Debug, PartialEq)]
 pub enum Operand {
     Numeric(i64),
+    Decimal(f64),
 }
 impl Operand {
     pub fn into_i64(&self) -> i64 {
         match self {
             Operand::Numeric(val) => *val,
+            Operand::Decimal(val) => *val as i64,
         }
     }
 
-    pub fn from_string(string: String) -> Result<Self, String> {
-        match string.parse() {
-            Ok(value) => Ok(Operand::Numeric(value)),
-            Err(x) => Err(format!("Failed to convert \'{}\' into Operand\n{}", string, x.to_string()))
+    pub fn from_string(string: &str) -> Result<Option<Self>, ParseFloatError> {
+        match string.parse::<f64>() {
+            Ok(value) => {
+                if value == 0.0 { return Ok(None) }
+                if value.fract() == 0.0 {
+                    return Ok(Some(Operand::Numeric(value as i64)));
+                }
+                Ok(Some(Operand::Decimal(value)))
+            },
+            Err(err) => Err(err),
         }
-        
     }
 }
 
