@@ -1,5 +1,9 @@
 # calc
 
+# Note of Archival
+
+This will be temporarily archived, I might still continue developing this in the future.
+
 Learning rust by taking inspiration from [numi](https://github.com/nikolaeu/numi).
 
 ### Short Term Goals
